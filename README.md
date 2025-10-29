@@ -34,10 +34,9 @@ Elle  permet de gérer complètement le cycle de vie des réservations hôteliè
 1. Templates HTML avec Bootstrap
 2. Contrôleurs MVC retournent des vues Thymeleaf
 3. CSS/JS statiques servis depuis /static/
-- Interface React :
-1. Composants React envoient requêtes HTTP vers API REST
-2. Contrôleurs REST retournent JSON
-3. Affichage des graphiques avec Chart.js
+
+
+- Affichage des graphiques avec Chart.js
 
 ## 3. Fonctionnalités principales
 ### CRUD sur les entités principales
