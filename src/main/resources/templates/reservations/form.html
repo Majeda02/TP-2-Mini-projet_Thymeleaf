@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouvelle Réservation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark navbar-expand-lg mb-4 navbar-gradient">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="fas fa-hotel"></i> Hôtel</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link text-white" href="/chambres">Chambres</a>
+                <a class="nav-link text-white" href="/clients">Clients</a>
+                <a class="nav-link text-white" href="/reservations">Réservations</a>
+                <a class="nav-link text-white" href="/stats">Statistiques</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">
+                            <i class="fas fa-calendar-check"></i> 
+                            <span th:if="${reservation != null && reservation.PK != null}">Modifier Réservation</span>
+                            <span th:if="${reservation == null || reservation.PK == null}">Nouvelle Réservation</span>
+                        </h4>
+
+                        <form th:action="${reservation != null && reservation.PK != null} ? 
+                                        @{/reservations/edit/{chambreId}/{clientId}/{checkIn}/{checkOut}(chambreId=${reservation.PK.chambre}, clientId=${reservation.PK.client}, checkIn=${#temporals.format(reservation.PK.checkIn, 'yyyy-MM-dd')}, checkOut=${#temporals.format(reservation.PK.checkOut, 'yyyy-MM-dd')})} : 
+                                        @{/reservations/create}" method="post">
+                            <div class="mb-3">
+                                <label class="form-label">Chambre <span class="text-danger">*</span></label>
+                                <select class="form-select" name="chambreId" required th:disabled="${reservation != null && reservation.PK != null}">
+                                    <option value="">Sélectionner une chambre</option>
+                                    <option th:each="chambre : ${chambres}" 
+                                            th:value="${chambre.id}" 
+                                            th:selected="${reservation != null && reservation.chambre != null && chambre.id == reservation.chambre.id}"
+                                            th:text="${chambre.numero + ' (' + chambre.type + ') - ' + chambre.prixNuit + ' DH/nuit'}">
+                                    </option>
+                                </select>
+                                <input th:if="${reservation != null && reservation.PK != null}" 
+                                       type="hidden" 
+                                       th:name="chambreId" 
+                                       th:value="${reservation.PK.chambre}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Client <span class="text-danger">*</span></label>
+                                <select class="form-select" name="clientId" required th:disabled="${reservation != null && reservation.PK != null}">
+                                    <option value="">Sélectionner un client</option>
+                                    <option th:each="client : ${clients}" 
+                                            th:value="${client.id}" 
+                                            th:selected="${reservation != null && reservation.client != null && client.id == reservation.client.id}"
+                                            th:text="${client.nom}">
+                                    </option>
+                                </select>
+                                <input th:if="${reservation != null && reservation.PK != null}" 
+                                       type="hidden" 
+                                       th:name="clientId" 
+                                       th:value="${reservation.PK.client}">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Check-In <span class="text-danger">*</span></label>
+                                    <input type="date" 
+                                           class="form-control" 
+                                           th:name="${reservation != null && reservation.PK != null} ? 'newCheckIn' : 'checkIn'"
+                                           th:value="${reservation != null && reservation.PK != null} ? ${#temporals.format(reservation.PK.checkIn, 'yyyy-MM-dd')} : ''"
+                                           required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Check-Out <span class="text-danger">*</span></label>
+                                    <input type="date" 
+                                           class="form-control" 
+                                           th:name="${reservation != null && reservation.PK != null} ? 'newCheckOut' : 'checkOut'"
+                                           th:value="${reservation != null && reservation.PK != null} ? ${#temporals.format(reservation.PK.checkOut, 'yyyy-MM-dd')} : ''"
+                                           required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Statut <span class="text-danger">*</span></label>
+                                <select class="form-select" name="statut" required>
+                                    <option value="">Sélectionner un statut</option>
+                                    <option value="Confirmée" th:selected="${reservation != null && reservation.statut == 'Confirmée'}">Confirmée</option>
+                                    <option value="En attente" th:selected="${reservation != null && reservation.statut == 'En attente'}">En attente</option>
+                                    <option value="Annulée" th:selected="${reservation != null && reservation.statut == 'Annulée'}">Annulée</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Total (DH) <span class="text-danger">*</span></label>
+                                <input type="number" 
+                                       step="0.01" 
+                                       class="form-control" 
+                                       name="total" 
+                                       th:value="${reservation != null ? reservation.total : ''}"
+                                       required>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Enregistrer
+                                </button>
+                                <a th:href="@{/reservations}" class="btn btn-secondary">
+                                    <i class="fas fa-times"></i> Annuler
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/stats.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-dark navbar-expand-lg mb-4 navbar-gradient">
+    <div class="container">
+        <a class="navbar-brand" href="/">Hôtel</a>
+        <div class="navbar-nav ms-auto">
+            <a class="nav-link text-white" href="/chambres">Chambres</a>
+            <a class="nav-link text-white" href="/clients">Clients</a>
+            <a class="nav-link text-white" href="/reservations">Réservations</a>
+            <a class="nav-link text-white active" href="/stats">Statistiques</a>
+        </div>
+    </div>
+    </nav>
+
+<div class="container">
+    <h2 class="mb-4">Statistiques</h2>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Taux d'occupation</h5>
+                    <div class="chart-sm">
+                        <canvas id="chartOccupation"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">RevPAR</h5>
+                    <p class="display-6" th:text="${#numbers.formatDecimal(revPAR, 0, 0)} + ' DH'"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Répartition des chambres par type</h5>
+                    <div class="chart-md">
+                        <canvas id="chartTypes"></canvas>
+                    </div>
+                    <div th:if="${#maps.isEmpty(parType)}" class="text-muted">Aucune donnée</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Réservations par statut</h5>
+                    <div class="chart-md">
+                        <canvas id="chartStatuts"></canvas>
+                    </div>
+                    <div th:if="${#maps.isEmpty(parStatut)}" class="text-muted">Aucune donnée</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+    const tauxOccupation = /*[[${tauxOccupation}]]*/ 0;
+    const parType = /*[[${parType}]]*/ {};
+    const parStatut = /*[[${parStatut}]]*/ {};
+
+    // Taux d'occupation (doughnut)
+    (function(){
+        const ctx = document.getElementById('chartOccupation');
+        if (!ctx) return;
+        const value = Math.max(0, Math.min(100, Number(tauxOccupation || 0)));
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Occupé', 'Libre'],
+                datasets: [{
+                    data: [value, 100 - value],
+                    backgroundColor: ['#667eea', '#e2e8f0']
+                }]
+            },
+            options: {cutout: '70%', plugins: {legend: {position: 'bottom'}}}
+        });
+    })();
+
+    // Chambres par type (bar)
+    (function(){
+        const ctx = document.getElementById('chartTypes');
+        if (!ctx) return;
+        const labels = Object.keys(parType || {});
+        const data = Object.values(parType || {});
+        new Chart(ctx, {
+            type: 'bar',
+            data: { labels, datasets: [{ label: 'Chambres', data, backgroundColor: '#764ba2' }] },
+            options: { plugins: {legend: {display: false}}, scales: { y: { beginAtZero: true, precision:0 }}}
+        });
+    })();
+
+    // Réservations par statut (pie)
+    (function(){
+        const ctx = document.getElementById('chartStatuts');
+        if (!ctx) return;
+        const labels = Object.keys(parStatut || {});
+        const data = Object.values(parStatut || {});
+        new Chart(ctx, {
+            type: 'pie',
+            data: { 
+                labels, 
+                datasets: [{ 
+                    data, 
+                    backgroundColor: ['#2ecc71', '#f39c12', '#e74c3c', '#3498db', '#9b59b6'] 
+                }] 
+            },
+            options: { plugins: {legend: {position: 'bottom'}} }
+        });
+    })();
+</script>
+</body>
+</html>
+
+

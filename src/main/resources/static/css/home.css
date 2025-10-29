@@ -1,0 +1,51 @@
+.main-container {
+    padding: 40px 0;
+}
+
+.welcome-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    padding: 40px;
+    margin-bottom: 30px;
+}
+
+.card-menu {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+}
+
+.card-menu:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    color: inherit;
+}
+
+.card-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.card-menu.chambres .card-icon { color: #3498db; }
+.card-menu.clients .card-icon { color: #2ecc71; }
+.card-menu.reservations .card-icon { color: #e74c3c; }
+.card-menu.statistiques .card-icon { color: #f39c12; }
+
+h1 {
+    color: #2c3e50;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-size: 18px;
+}
+
+

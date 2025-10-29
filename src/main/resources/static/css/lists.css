@@ -1,0 +1,16 @@
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.badge-disponible { background-color: #28a745; }
+.badge-indisponible { background-color: #dc3545; }
+
+.price { font-size: 1.5rem; color: #667eea; font-weight: bold; }
+.badge-statut { font-size: 0.9rem; padding: 0.5rem 1rem; }
+.price-total { font-size: 1.3rem; color: #28a745; font-weight: bold; }
+
+

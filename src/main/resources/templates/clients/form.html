@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${client.id == null} ? 'Nouveau Client' : 'Modifier Client'">Formulaire Client</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark navbar-expand-lg mb-4 navbar-gradient">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="fas fa-hotel"></i> Hôtel</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link text-white" href="/chambres">Chambres</a>
+                <a class="nav-link text-white" href="/clients">Clients</a>
+                <a class="nav-link text-white" href="/reservations">Réservations</a>
+                <a class="nav-link text-white" href="/stats">Statistiques</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">
+                            <i class="fas fa-users"></i> 
+                            <span th:text="${client.id == null} ? 'Nouveau Client' : 'Modifier Client'"></span>
+                        </h4>
+
+                        <form th:action="${client.id == null} ? @{/clients/create} : @{/clients/edit/{id}(id=${client.id})}" 
+                              th:object="${client}" 
+                              method="post">
+                            <div class="mb-3">
+                                <label class="form-label">Nom <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" th:field="*{nom}" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Passport</label>
+                                <input type="text" class="form-control" th:field="*{passeport}">
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Enregistrer
+                                </button>
+                                <a th:href="@{/clients}" class="btn btn-secondary">
+                                    <i class="fas fa-times"></i> Annuler
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+
+
