@@ -3,11 +3,11 @@
 
 # 1. Description du projet
 ## Contexte fonctionnel du domaine choisi (hôtel): 
-    Cette application est un système de gestion hôtelière complet permettant de gérer les chambres, les clients et les réservations d'un hôtel. Elle offre une interface moderne et intuitive pour les gestionnaires d'hôtel.
+Cette application est un système de gestion hôtelière complet permettant de gérer les chambres, les clients et les réservations d'un hôtel. Elle offre une interface moderne et intuitive pour les gestionnaires d'hôtel.
 ## Objectif de l'application:
-     L'objectif est de digitaliser et automatiser la gestion quotidienne d'un hôtel en fournissant des outils de gestion des réservations, de suivi des clients et d'analyse des performances.
+L'objectif est de digitaliser et automatiser la gestion quotidienne d'un hôtel en fournissant des outils de gestion des réservations, de suivi des clients et d'analyse des performances.
 ## Public cible / cas d'usage:
-    L'administration d'd'hôtel --> Pour gérer les réservations , les chambres et les clients ainsi qu'analyser les statistiques et performances
+L'administration d'd'hôtel --> Pour gérer les réservations , les chambres et les clients ainsi qu'analyser les statistiques et performances
 ## Ce que l'application permet concrètement :
 Elle  permet de gérer complètement le cycle de vie des réservations hôtelières, de la création des chambres à l'analyse des performances via un tableau de bord statistique.
 
@@ -103,8 +103,8 @@ http://localhost:8080/stats
 
 # _____________________________________
 
-L’Ecole Normale Supérieure de Marrakech 
-Module: Programmation avancées et DevOps
-Encadré par : Mr.LACHGAR Mohamed  
-Réalisé par : BEN-LAGHFIRI Majeda 
+###### L’Ecole Normale Supérieure de Marrakech 
+###### Module: Programmation avancées et DevOps
+###### Encadré par : Mr.LACHGAR Mohamed  
+###### Réalisé par : BEN-LAGHFIRI Majeda 
 
