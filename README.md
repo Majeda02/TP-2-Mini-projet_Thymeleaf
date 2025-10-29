@@ -47,7 +47,6 @@ Elle  permet de gérer complètement le cycle de vie des réservations hôteliè
 ### Recherche / Filtrage
 - *Chambres* : Filtrage par type (Single, Double, Suite, Deluxe) et disponibilité
 - *Réservations* : Filtrage par période (check-in/check-out) et statut
-- *Clients* : Recherche par nom et passeport
 ### Tableau de bord / Statistiques
 - *Taux d'occupation* : Pourcentage de chambres occupées
 - *RevPAR* : Revenue Per Available Room (Revenu par chambre disponible)
