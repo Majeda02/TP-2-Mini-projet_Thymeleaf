@@ -1,8 +1,6 @@
 package com.example.Hotel.entities;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Generated;
-
 import java.math.BigDecimal;
 import java.util.List;
 

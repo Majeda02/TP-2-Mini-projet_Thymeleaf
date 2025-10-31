@@ -1,7 +1,6 @@
 package com.example.Hotel.service;
 
 import com.example.Hotel.entities.Chambre;
-import com.example.Hotel.entities.Client;
 import com.example.Hotel.entities.Reservation;
 import com.example.Hotel.entities.ReservationPK;
 import com.example.Hotel.repository.ReservationRepository;

@@ -1,18 +1,14 @@
 package com.example.Hotel.service;
 
-import com.example.Hotel.entities.Chambre;
-import com.example.Hotel.entities.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import com.example.Hotel.repository.ChambreRepository;
 import com.example.Hotel.repository.ReservationRepository;
-import com.example.Hotel.service.ClientService;
+
 
 @Service
 public class StatsService {

@@ -2,7 +2,6 @@ package com.example.Hotel.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-
 import java.util.List;
 
 @Entity
