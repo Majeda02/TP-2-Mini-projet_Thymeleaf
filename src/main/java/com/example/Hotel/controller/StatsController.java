@@ -19,9 +19,11 @@ public class StatsController {
     @GetMapping
     public String index(Model model) {
         model.addAttribute("tauxOccupation", statsService.getTauxOccupationSimple());
-        model.addAttribute("revPAR", statsService.getRevPARSimple());
         model.addAttribute("parType", statsService.getRepartitionChambresParType());
         model.addAttribute("parStatut", statsService.getReservationsParStatut());
+        model.addAttribute("totalChambres", statsService.getTotalChambres());
+        model.addAttribute("totalClients", statsService.getTotalClients());
+        model.addAttribute("totalReservations", statsService.getTotalReservations());
         return "stats/index";
     }
 }

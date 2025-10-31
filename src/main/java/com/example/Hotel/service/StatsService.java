@@ -10,6 +10,9 @@ import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.example.Hotel.repository.ChambreRepository;
+import com.example.Hotel.repository.ReservationRepository;
+import com.example.Hotel.service.ClientService;
 
 @Service
 public class StatsService {
@@ -20,42 +23,60 @@ public class StatsService {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private ChambreRepository chambreRepository;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
+
+    @Autowired
+    private ClientService clientService;
+
     public double getTauxOccupationSimple() {
-        long total = chambreService.countChambres();
+        long total = chambreRepository.count();
         if (total == 0) return 0.0;
-        // Compter les chambres non disponibles
-        long occupees = chambreService.getChambresByDisponibilite(false).size();
+        long occupees = chambreRepository.countOccupied();
         return (occupees / (double) total) * 100.0;
     }
 
     public BigDecimal getRevPARSimple() {
-        long totalChambres = chambreService.countChambres();
+        long totalChambres = chambreRepository.count();
         if (totalChambres == 0) return BigDecimal.ZERO;
-        List<Reservation> reservations = reservationService.getAllReservations();
-        BigDecimal revenuTotal = reservations.stream()
-                .map(Reservation::getTotal)
-                .filter(v -> v != null)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal revenuTotal = reservationRepository.sumTotalRevenue();
         return revenuTotal.divide(BigDecimal.valueOf(totalChambres), 2, RoundingMode.HALF_UP);
     }
 
 
     public Map<String, Long> getRepartitionChambresParType() {
         Map<String, Long> out = new HashMap<>();
-        for (Chambre c : chambreService.getAllChambres()) {
-            String key = c.getType();
-            out.put(key, out.getOrDefault(key, 0L) + 1);
+        for (Object[] row : chambreRepository.countGroupByType()) {
+            String type = (String) row[0];
+            Long count = (Long) row[1];
+            out.put(type, count);
         }
         return out;
     }
 
     public Map<String, Long> getReservationsParStatut() {
         Map<String, Long> out = new HashMap<>();
-        for (Reservation r : reservationService.getAllReservations()) {
-            String key = r.getStatut();
-            out.put(key, out.getOrDefault(key, 0L) + 1);
+        for (Object[] row : reservationRepository.countGroupByStatut()) {
+            String statut = (String) row[0];
+            Long count = (Long) row[1];
+            out.put(statut, count);
         }
         return out;
+    }
+
+    public long getTotalChambres() {
+        return chambreRepository.count();
+    }
+
+    public long getTotalClients() {
+        return clientService.countClients();
+    }
+
+    public long getTotalReservations() {
+        return reservationRepository.count();
     }
 }
 

@@ -46,7 +46,7 @@ public class ChambreService {
                 // Si la disponibilité change ET qu'il y a des réservations actives
                 if (!existingChambre.getDisponible().equals(chambre.getDisponible()) && 
                     reservationService.hasActiveReservations(chambre.getId())) {
-                    throw new IllegalStateException("🚫 Cette chambre ne peut pas être modifiée car elle a des réservations confirmées. La disponibilité ne peut être changée qu'après annulation ou suppression de toutes les réservations.");
+                    throw new IllegalStateException(" Cette chambre ne peut pas être modifiée car elle a des réservations confirmées.");
                 }
             }
         }

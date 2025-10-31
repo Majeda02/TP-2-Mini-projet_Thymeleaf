@@ -32,6 +32,11 @@
                             <span th:if="${reservation == null || reservation.PK == null}">Nouvelle Réservation</span>
                         </h4>
 
+                        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                            <span th:text="${error}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+
                         <form th:action="${reservation != null && reservation.PK != null} ? 
                                         @{/reservations/edit/{chambreId}/{clientId}/{checkIn}/{checkOut}(chambreId=${reservation.PK.chambre}, clientId=${reservation.PK.client}, checkIn=${#temporals.format(reservation.PK.checkIn, 'yyyy-MM-dd')}, checkOut=${#temporals.format(reservation.PK.checkOut, 'yyyy-MM-dd')})} : 
                                         @{/reservations/create}" method="post">

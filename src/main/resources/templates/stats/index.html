@@ -25,9 +25,38 @@
 <div class="container">
     <h2 class="mb-4">Statistiques</h2>
 
+    <!-- Totaux -->
     <div class="row g-4 mb-4">
-        <div class="col-md-6">
-            <div class="card">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="text-muted">Chambres</h6>
+                    <p class="display-6 mb-0" th:text="${totalChambres}">0</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="text-muted">Clients</h6>
+                    <p class="display-6 mb-0" th:text="${totalClients}">0</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="text-muted">Réservations</h6>
+                    <p class="display-6 mb-0" th:text="${totalReservations}">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Graphiques côte à côte -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title">Taux d'occupation</h5>
                     <div class="chart-sm">
@@ -36,18 +65,21 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card">
+        <div class="col-lg-6">
+            <div class="card h-100">
                 <div class="card-body">
-                    <h5 class="card-title">RevPAR</h5>
-                    <p class="display-6" th:text="${#numbers.formatDecimal(revPAR, 0, 0)} + ' DH'"></p>
+                    <h5 class="card-title">Réservations par statut</h5>
+                    <div class="chart-md">
+                        <canvas id="chartStatuts"></canvas>
+                    </div>
+                    <div th:if="${#maps.isEmpty(parStatut)}" class="text-muted">Aucune donnée</div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="row g-4">
-        <div class="col-md-6">
+        <div class="col-12">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Répartition des chambres par type</h5>
@@ -55,17 +87,6 @@
                         <canvas id="chartTypes"></canvas>
                     </div>
                     <div th:if="${#maps.isEmpty(parType)}" class="text-muted">Aucune donnée</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Réservations par statut</h5>
-                    <div class="chart-md">
-                        <canvas id="chartStatuts"></canvas>
-                    </div>
-                    <div th:if="${#maps.isEmpty(parStatut)}" class="text-muted">Aucune donnée</div>
                 </div>
             </div>
         </div>

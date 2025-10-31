@@ -51,14 +51,30 @@ public class ReservationService {
     }
 
     public Reservation saveReservation(Reservation reservation) {
-        // Mettre à jour la disponibilité de la chambre
+        // Vérifier le chevauchement pour toute réservation non annulée
+        if (reservation.getChambre() != null && reservation.getChambre().getId() != null &&
+            reservation.getPK() != null && !"Annulée".equals(reservation.getStatut())) {
+            Long chambreId = reservation.getChambre().getId();
+            LocalDate start = reservation.getPK().getCheckIn();
+            LocalDate end = reservation.getPK().getCheckOut();
+            List<Reservation> overlaps = reservationRepository.findOverlaps(chambreId, start, end);
+            if (!overlaps.isEmpty()) {
+                throw new IllegalStateException("Cette chambre est déjà réservée pour ces dates.");
+            }
+        }
+
+        // Mettre à jour la disponibilité de la chambre selon le statut
         if (reservation.getChambre() != null && reservation.getChambre().getId() != null) {
             Optional<Chambre> chambreOpt = chambreService.getChambreById(reservation.getChambre().getId());
             if (chambreOpt.isPresent()) {
                 Chambre chambre = chambreOpt.get();
-                // Ne changer la disponibilité que si le statut est "Confirmée"
                 if ("Confirmée".equals(reservation.getStatut())) {
                     chambre.setDisponible(false);
+                } else if ("Annulée".equals(reservation.getStatut())) {
+                    // Si annulée, libérer seulement s'il n'y a aucune autre réservation confirmée
+                    if (!hasActiveReservations(chambre.getId())) {
+                        chambre.setDisponible(true);
+                    }
                 }
                 chambreService.saveChambre(chambre);
             }
@@ -72,17 +88,41 @@ public class ReservationService {
             Reservation existing = existingOpt.get();
             Long chambreId = existing.getChambre() != null ? existing.getChambre().getId() : null;
             
-            // Sauvegarder la réservation mise à jour
-            updatedReservation.setPK(pk);
+            // Avant sauvegarde: règles selon changement de statut et chevauchement
+            boolean wasConfirmed = "Confirmée".equals(existing.getStatut());
+            boolean isNowConfirmed = "Confirmée".equals(updatedReservation.getStatut());
+
+            // Déterminer le nouveau PK (période potentiellement modifiée)
+            ReservationPK targetPk = updatedReservation.getPK() != null ? updatedReservation.getPK() : pk;
+
+            if (!"Annulée".equals(updatedReservation.getStatut()) && existing.getChambre() != null && targetPk != null) {
+                Long cid = existing.getChambre().getId();
+                LocalDate start = targetPk.getCheckIn();
+                LocalDate end = targetPk.getCheckOut();
+                List<Reservation> overlaps = reservationRepository.findOverlaps(cid, start, end);
+                // Exclure la réservation actuelle si même PK
+                overlaps.removeIf(r -> r.getPK() != null && r.getPK().equals(pk));
+                if (!overlaps.isEmpty()) {
+                    throw new IllegalStateException("Cette chambre est déjà réservée pour ces dates.");
+                }
+            }
+
+            // Préparer entités liées
+            updatedReservation.setPK(targetPk);
             updatedReservation.setChambre(existing.getChambre());
             updatedReservation.setClient(existing.getClient());
-            Reservation savedReservation = reservationRepository.save(updatedReservation);
+
+            // Si le PK change, supprimer l'ancien enregistrement puis enregistrer le nouveau
+            Reservation savedReservation;
+            if (!targetPk.equals(pk)) {
+                reservationRepository.deleteById(pk);
+                savedReservation = reservationRepository.save(updatedReservation);
+            } else {
+                savedReservation = reservationRepository.save(updatedReservation);
+            }
             
             // Gérer la disponibilité de la chambre selon le changement de statut
             if (chambreId != null) {
-                boolean wasConfirmed = "Confirmée".equals(existing.getStatut());
-                boolean isNowConfirmed = "Confirmée".equals(updatedReservation.getStatut());
-                
                 if (wasConfirmed && !isNowConfirmed) {
                     // Réservation déconfirmée, libérer la chambre si plus de réservations confirmées
                     if (!hasActiveReservations(chambreId)) {
