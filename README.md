@@ -112,11 +112,20 @@ http://localhost:8080/
 #### -URL du tableau de bord / statistiques.
 http://localhost:8080/stats
 <img width="1883" height="870" alt="image" src="https://github.com/user-attachments/assets/22f05729-b30c-4227-847b-f45370c3d165" />
-<img width="1878" height="886" alt="image" src="https://github.com/user-attachments/assets/ae40d7b7-065d-4f3b-be90-021c0899c0b5" />
 
 
 # 6. Démonstration
+
+- Lien vers la vidéo de démonstration sur YouTube
+https://youtu.be/iKrKSQqg9OY?si=OIa_GamssExPsnWi
+
+
+- Lien vers le dossier partagé sur Google Drive
 https://drive.google.com/drive/folders/1NTa9MfB1wZ-Tb8X6R9AcwIjIKydqnJOJ?usp=drive_link
+
+
+
+
 
 
 # _____________________________________
