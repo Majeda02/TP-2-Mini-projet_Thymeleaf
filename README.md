@@ -120,7 +120,7 @@ http://localhost:8080/stats
 https://youtu.be/iKrKSQqg9OY?si=OIa_GamssExPsnWi
 
 
-- Lien vers le dossier partagé sur Google Drive
+- Lien vers  Google Drive
 https://drive.google.com/drive/folders/1NTa9MfB1wZ-Tb8X6R9AcwIjIKydqnJOJ?usp=drive_link
 
 
