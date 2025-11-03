@@ -45,7 +45,8 @@ Gérer le cycle de vie des réservations de bout en bout (création/édition/sup
 ## 2.3 Diagramme d’architecture 
 ### Flux
 Navigateur → Contrôleur Spring MVC → Service → Repository (Spring Data JPA) → MySQL → Retour Vue Thymeleaf
-![WhatsApp Image 2025-10-29 à 10 40 57_19a9a1c8](https://github.com/user-attachments/assets/d5272478-7cd4-4351-b7b3-da5b2c6ca3a7)
+<img width="909" height="496" alt="image" src="https://github.com/user-attachments/assets/e31bd418-718c-4234-ad14-7c5308e15950" />
+
 
 ## 3. Fonctionnalités principales
 ### CRUD sur les entités principales
